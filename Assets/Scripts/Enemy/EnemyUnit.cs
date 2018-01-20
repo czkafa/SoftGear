@@ -6,7 +6,7 @@ namespace SoftGear.Enemy
 {
     public class EnemyUnit : MonoBehaviour
     {
-        void Init()
+        public void Init()
         {
 
         }

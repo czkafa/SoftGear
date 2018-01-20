@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using SoftGear.Enemy;
+using SoftGear.Common;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,15 +12,34 @@ public class GameManager : MonoBehaviour
     Transform spawnPoint;
     [SerializeField]
     EnemyUnit enemyPrefab;
-    // Use this for initialization
+    [SerializeField]
+    Button feedButton;
+    [SerializeField]
+    ProgressBarController progressBar;
+
+
+    EnemyUnit currentOpponent;
+
     void Start()
     {
-        GameObject.Instantiate(enemyPrefab, spawnPoint);
+        SpawningNewOpponent();
+        feedButton.onClick.AddListener(FeedEnemy);
+        progressBar.Init(x);
     }
 
-    // Update is called once per frame
-    void Update()
+    void SpawningNewOpponent()
     {
+        if (currentOpponent)
+        {
+            DestroyImmediate(currentOpponent);
+        }
+        currentOpponent = GameObject.Instantiate(enemyPrefab, spawnPoint);
+        currentOpponent.Init();
+    }
 
+    int x = 10;
+    public void FeedEnemy()
+    {
+        progressBar.Substract(1);
     }
 }
