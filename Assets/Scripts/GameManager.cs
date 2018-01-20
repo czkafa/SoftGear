@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SoftGear.Enemy;
 using SoftGear.Common;
+using SoftGear.Weapon;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,15 +17,33 @@ public class GameManager : MonoBehaviour
     Button feedButton;
     [SerializeField]
     ProgressBarController progressBar;
-
-
+    [SerializeField]
+    GameObject weaponaryTransform;
+    [SerializeField]
+    Weapon defaultWeapon;
     EnemyUnit currentOpponent;
+    Weaponary weaponary;
 
     void Start()
     {
+        var weaponsFromGUI = weaponaryTransform.GetComponentsInChildren<Weapon>();
+        List<Weapon> weaponList = new List<Weapon>();
+        Dictionary<Weapon, bool> weaponStatusDictionary = new Dictionary<Weapon, bool>();
+        foreach (var weaponFromGUI in weaponsFromGUI)
+        {
+            weaponList.Add(weaponFromGUI);
+            var isUnlocked = weaponFromGUI == defaultWeapon;
+            weaponStatusDictionary.Add(weaponFromGUI, isUnlocked);
+
+        }
+        UserInfo.Instance.OwnedWeapons = weaponStatusDictionary;
+        weaponary = new Weaponary();
+        weaponary.Init(weaponList, defaultWeapon);
         SpawningNewOpponent();
         feedButton.onClick.AddListener(FeedEnemy);
         progressBar.Init(x);
+
+
     }
 
     void SpawningNewOpponent()
