@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Assets.Scripts.Common.Enums;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SoftGear.Weapon
+namespace SoftGear.Weapons
 {
     public class Weapon : MonoBehaviour
     {
@@ -16,6 +17,15 @@ namespace SoftGear.Weapon
         bool selected = false;
         Action<Weapon> checkOthers;
 
+        [SerializeField]
+        public int weaponPrice;
+        [SerializeField]
+        public int weaponDamage;
+        [SerializeField]
+        public WeaponType WeaponType;
+        [SerializeField]
+        public WeaponName WeaponName;
+
         public void Init(Action<Weapon> checkOthers)
         {
             this.checkOthers = checkOthers;
@@ -26,11 +36,13 @@ namespace SoftGear.Weapon
 
         public void SelectWeapon()
         {
+            button.targetGraphic.color = Color.white;
             selected = true;
         }
 
         public void UnselectWeapon()
         {
+            button.targetGraphic.color = Color.gray;
             selected = false;
         }
 
@@ -55,10 +67,10 @@ namespace SoftGear.Weapon
 
         }
 
-        public virtual void Lock(bool shouldBeLocked)
+        public virtual void Lock(bool shouldBeUnlocked)
         {
-            lockIcon.SetActive(!shouldBeLocked);
-            button.interactable = shouldBeLocked;
+            lockIcon.SetActive(!shouldBeUnlocked);
+            button.interactable = shouldBeUnlocked;
         }
 
         public virtual void CheckWeapon()

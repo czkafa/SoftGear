@@ -1,20 +1,22 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SoftGear.Weapon
+namespace SoftGear.Weapons
 {
-    public class Weaponary : List<Weapon>
+    public class Weaponary
     {
         Weapon currentlySelectedWeapon;
-        List<Weapon> weaponList;
+        public List<Weapon> WeaponList;
 
         public void Init(List<Weapon> weaponList, Weapon defaultWeapon)
         {
-            this.weaponList = weaponList;
+            this.WeaponList = weaponList;
             this.currentlySelectedWeapon = defaultWeapon;
-            this.weaponList.ForEach(x => x.Init(CheckOthers));
+            this.WeaponList.ForEach(x => { if (!x.Equals(defaultWeapon)) x.UnselectWeapon(); });
+            this.WeaponList.ForEach(x => x.Init(CheckOthers));
         }
 
         public void Refresh()
@@ -22,15 +24,16 @@ namespace SoftGear.Weapon
 
         }
 
-        public void Attack()
+        public int AttackDamage()
         {
-            currentlySelectedWeapon.Attack();
+            return currentlySelectedWeapon.weaponDamage;
         }
 
         void CheckOthers(Weapon weaponToSelect)
         {
             currentlySelectedWeapon.UnselectWeapon();
             weaponToSelect.SelectWeapon();
+            currentlySelectedWeapon = weaponToSelect;
         }
 
     }

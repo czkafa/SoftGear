@@ -1,4 +1,5 @@
-﻿using SoftGear.Weapon;
+﻿using Assets.Scripts.Common;
+using SoftGear.Weapons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,9 @@ public class UserInfo
 {
 
     private static UserInfo instance;
-    private UserInfo() { }
+    private UserInfo()
+    {
+    }
 
     public static UserInfo Instance
     {
@@ -36,23 +39,14 @@ public class UserInfo
         }
     }
 
-    private Dictionary<Weapon, bool> ownedWeapons = new Dictionary<Weapon, bool>();
+    public Dictionary<Weapon, int> WeaponPrice;
 
-    public Dictionary<Weapon, bool> OwnedWeapons
-    {
-        get { return ownedWeapons; }
-        set
-        {
-            ownedWeapons = value;
-            OnUserInfoUpdated();
-
-        }
-    }
+    public ExtendedDictonary<Weapon, bool> OwnedWeapons;
 
     public delegate void OnUserInfoUpdateHandler();
     public event OnUserInfoUpdateHandler UserInfoUpdate;
 
-    protected virtual void OnUserInfoUpdated()
+    protected void OnUserInfoUpdated()
     {
         OnUserInfoUpdateHandler handler = UserInfoUpdate;
         if (handler != null)
@@ -60,4 +54,6 @@ public class UserInfo
             handler();
         }
     }
+
+
 }

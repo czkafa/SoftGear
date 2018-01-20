@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SoftGear.Weapons
 {
-    public class Carrot : Weapon
+    public class Karaage : Weapon
     {
         public override void Attack()
         {

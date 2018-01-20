@@ -22,6 +22,7 @@ namespace SoftGear.Common
 
         public void Init(int initValue)
         {
+            this.toSubstract = 0;
             this.currentValue = initValue;
             this.maxValue = initValue;
             this.isInitialized = true;
@@ -54,9 +55,21 @@ namespace SoftGear.Common
                 if (currentValue <= 0)
                 {
                     this.enabled = false;
+                    OnEmptyProgressBar();
                     break;
                 }
                 yield return null;
+            }
+        }
+        public delegate void OnProgressBarEmpty();
+        public event OnProgressBarEmpty ProgressBarEmpty;
+
+        protected void OnEmptyProgressBar()
+        {
+            OnProgressBarEmpty handler = ProgressBarEmpty;
+            if (handler != null)
+            {
+                handler();
             }
         }
     }
